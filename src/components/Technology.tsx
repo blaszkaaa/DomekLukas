@@ -1,6 +1,6 @@
-
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Thermometer, Home, Recycle, LucideProps } from 'lucide-react';
+import { useState } from 'react';
 
 const TechCard = ({ 
   icon: Icon, 
@@ -9,26 +9,63 @@ const TechCard = ({
   background,
   delay 
 }: {
-  // Update the icon type to match Lucide component type
   icon: React.ComponentType<LucideProps>;
   title: string;
   description: string;
   background: string;
   delay: number;
 }) => {
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  // Zoptymalizowane warianty animacji
+  const cardVariants = {
+    initial: { 
+      opacity: 0, 
+      y: 20 
+    },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.6, 
+        delay 
+      }
+    },
+    hover: { 
+      y: -10, 
+      boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+      transition: { 
+        duration: 0.3, 
+        delay: 0 
+      }
+    }
+  };
+
+  // Zoptymalizowane warianty dla ikon
+  const iconVariants = {
+    hover: { 
+      rotate: 360,
+      transition: { 
+        duration: 0.8, 
+        ease: "easeInOut" 
+      }
+    }
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay }}
+      variants={cardVariants}
+      initial="initial"
+      whileInView="animate"
+      whileHover="hover"
       viewport={{ once: true }}
-      whileHover={{ y: -10, boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}
+      onAnimationComplete={() => setHasAnimated(true)}
       className={`${background} rounded-xl overflow-hidden shadow-lg transition-all duration-300`}
     >
       <div className="p-8">
         <motion.div
-          whileHover={{ rotate: 360 }}
-          transition={{ duration: 1 }}
+          variants={iconVariants}
+          whileHover="hover"
           className="w-16 h-16 flex items-center justify-center bg-white rounded-full shadow-md mb-6"
         >
           <Icon size={32} className="text-eco-green-600" />
@@ -38,87 +75,200 @@ const TechCard = ({
       </div>
       
       <div className="px-8 pb-8">
-        {title === 'Izolacja termiczna' && (
-          <div className="relative mt-4">
-            <div className="h-20 bg-white rounded-md overflow-hidden relative">
-              <div className="absolute inset-0 flex flex-col">
-                <div className="h-1/5 bg-eco-green-900 opacity-80" />
-                <div className="h-1/5 bg-eco-green-700 opacity-70" />
-                <div className="h-1/5 bg-eco-green-500 opacity-60" />
-                <div className="h-1/5 bg-eco-green-300 opacity-50" />
-                <div className="h-1/5 bg-eco-green-100 opacity-40" />
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className="text-white font-bold text-lg"
-                >
-                  U = 0.10 W/(m²K)
-                </motion.div>
-              </div>
-            </div>
-            <div className="mt-2 text-sm text-gray-500 text-center">
-              Wielowarstwowa izolacja termiczna
-            </div>
-          </div>
-        )}
-        
-        {title === 'System smart home' && (
-          <div className="mt-4 bg-white p-4 rounded-md">
+        <AnimatePresence mode="wait">
+          {title === 'Izolacja termiczna' && (
             <motion.div 
-              className="grid grid-cols-3 gap-2"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              viewport={{ once: true }}
+              className="relative mt-4"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ 
+                opacity: 1, 
+                height: 'auto',
+                transition: { 
+                  height: { duration: 0.3, ease: "easeInOut" },
+                  opacity: { duration: 0.3, delay: hasAnimated ? 0 : 0.2 }
+                }
+              }}
+              exit={{ 
+                opacity: 0, 
+                height: 0,
+                transition: { 
+                  opacity: { duration: 0.2 },
+                  height: { duration: 0.3, delay: 0 }
+                }
+              }}
+              key="izolacja"
             >
-              {['Światło', 'Temperatura', 'Energia', 'Bezpieczeństwo', 'Rolety', 'Multimedia'].map((item) => (
-                <motion.div
-                  key={item}
-                  whileHover={{ scale: 1.1, backgroundColor: '#4CAF50', color: 'white' }}
-                  className="p-2 text-xs bg-gray-100 rounded text-center cursor-pointer transition-colors"
-                >
-                  {item}
-                </motion.div>
-              ))}
+              <div className="h-20 bg-white rounded-md overflow-hidden relative">
+                <div className="absolute inset-0 flex flex-col">
+                  {[900, 700, 500, 300, 100].map((shade, index) => (
+                    <motion.div 
+                      key={shade}
+                      initial={{ width: 0 }}
+                      animate={{ width: '100%' }}
+                      transition={{ 
+                        duration: 0.4, 
+                        delay: hasAnimated ? 0 : 0.5 + (index * 0.08) 
+                      }}
+                      className={`h-1/5 bg-eco-green-${shade} opacity-${80 - (index * 10)}`} 
+                    />
+                  ))}
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ 
+                      delay: hasAnimated ? 0 : 0.9, 
+                      duration: 0.4, 
+                      type: "spring",
+                      stiffness: 200
+                    }}
+                    className="text-white font-bold text-lg"
+                  >
+                    U = 0.10 W/(m²K)
+                  </motion.div>
+                </div>
+              </div>
+              <div className="mt-2 text-sm text-gray-500 text-center">
+                Wielowarstwowa izolacja termiczna
+              </div>
             </motion.div>
-          </div>
-        )}
-        
-        {title === 'Ekologiczne materiały' && (
-          <div className="mt-4">
-            <div className="h-6 bg-white rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                whileInView={{ width: '80%' }}
-                transition={{ delay: 0.5, duration: 1 }}
-                viewport={{ once: true }}
-                className="h-full bg-eco-green-500 rounded-full text-right"
+          )}
+          
+          {title === 'System smart home' && (
+            <motion.div 
+              className="mt-4 bg-white p-4 rounded-md"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ 
+                opacity: 1, 
+                height: 'auto',
+                transition: { 
+                  height: { duration: 0.3, ease: "easeInOut" },
+                  opacity: { duration: 0.3, delay: hasAnimated ? 0 : 0.2 }
+                }
+              }}
+              exit={{ 
+                opacity: 0, 
+                height: 0,
+                transition: { 
+                  opacity: { duration: 0.2 },
+                  height: { duration: 0.3, delay: 0 }
+                }
+              }}
+              key="smarthome"
+            >
+              <motion.div 
+                className="grid grid-cols-3 gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ 
+                  delay: hasAnimated ? 0 : 0.4, 
+                  duration: 0.4
+                }}
               >
-                <span className="inline-block mr-2 text-white font-bold text-sm leading-6">
-                  80% materiałów z recyklingu
-                </span>
+                {['Światło', 'Temperatura', 'Energia', 'Bezpieczeństwo', 'Rolety', 'Multimedia'].map((item, index) => (
+                  <motion.div
+                    key={item}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: hasAnimated ? 0 : 0.5 + (index * 0.08), duration: 0.3 }}
+                    whileHover={{ 
+                      scale: 1.1, 
+                      backgroundColor: '#4CAF50', 
+                      color: 'white',
+                      transition: { duration: 0.2, delay: 0 }
+                    }}
+                    className="p-2 text-xs bg-gray-100 rounded text-center cursor-pointer transition-colors"
+                  >
+                    {item}
+                  </motion.div>
+                ))}
               </motion.div>
-            </div>
-            <div className="mt-4">
-              <div className="flex items-center justify-between text-sm">
-                <span>Drewno z certyfikowanych lasów</span>
-                <span className="text-eco-green-600 font-medium">✓</span>
+            </motion.div>
+          )}
+          
+          {title === 'Ekologiczne materiały' && (
+            <motion.div 
+              className="mt-4"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ 
+                opacity: 1, 
+                height: 'auto',
+                transition: { 
+                  height: { duration: 0.3, ease: "easeInOut" },
+                  opacity: { duration: 0.3, delay: hasAnimated ? 0 : 0.2 }
+                }
+              }}
+              exit={{ 
+                opacity: 0, 
+                height: 0,
+                transition: { 
+                  opacity: { duration: 0.2 },
+                  height: { duration: 0.3, delay: 0 }
+                }
+              }}
+              key="materialy"
+            >
+              <div className="h-6 bg-white rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '80%' }}
+                  transition={{ 
+                    delay: hasAnimated ? 0 : 0.4, 
+                    duration: 0.8, 
+                    ease: "easeOut" 
+                  }}
+                  viewport={{ once: true }}
+                  className="h-full bg-eco-green-500 rounded-full flex items-center justify-end"
+                >
+                  <motion.span 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: hasAnimated ? 0 : 1.2, duration: 0.3 }}
+                    className="inline-block mr-2 text-white font-bold text-sm"
+                  >
+                    80% materiałów z recyklingu
+                  </motion.span>
+                </motion.div>
               </div>
-              <div className="flex items-center justify-between text-sm mt-1">
-                <span>Farby bez LZO</span>
-                <span className="text-eco-green-600 font-medium">✓</span>
-              </div>
-              <div className="flex items-center justify-between text-sm mt-1">
-                <span>Materiały biodegradowalne</span>
-                <span className="text-eco-green-600 font-medium">✓</span>
-              </div>
-            </div>
-          </div>
-        )}
+              <motion.div 
+                className="mt-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: hasAnimated ? 0 : 1.0, duration: 0.4 }}
+              >
+                {[
+                  'Drewno z certyfikowanych lasów',
+                  'Farby bez LZO',
+                  'Materiały biodegradowalne'
+                ].map((item, index) => (
+                  <motion.div 
+                    key={item}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: hasAnimated ? 0 : 1.2 + (index * 0.15), duration: 0.3 }}
+                    className="flex items-center justify-between text-sm mt-1"
+                  >
+                    <span>{item}</span>
+                    <motion.span 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ 
+                        delay: hasAnimated ? 0 : 1.4 + (index * 0.15), 
+                        duration: 0.3,
+                        type: "spring",
+                        stiffness: 200
+                      }}
+                      className="text-eco-green-600 font-medium"
+                    >
+                      ✓
+                    </motion.span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   );

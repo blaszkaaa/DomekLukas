@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -134,7 +133,7 @@ const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
               </Button>
               <Button 
                 type="submit"
-                className="bg-eco-orange-600 hover:bg-eco-orange-700"
+                className="bg-eco-green-600 hover:bg-eco-green-700"
               >
                 Wyślij
               </Button>

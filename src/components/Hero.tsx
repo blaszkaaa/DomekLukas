@@ -1,7 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import ContactForm from './ContactForm';
+import { Link } from 'react-router-dom';
 
 const SLIDES = [
   { 
@@ -30,6 +31,7 @@ const ROTATING_TEXTS = [
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentText, setCurrentText] = useState(0);
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
 
   // Auto-rotate slides
   useEffect(() => {
@@ -102,18 +104,21 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex flex-wrap gap-4"
           >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-eco-green-600 hover:bg-eco-green-700 text-white px-6 py-3 rounded-md transition-colors text-lg relative overflow-hidden group"
-            >
-              <span className="relative z-10">Zobacz modele</span>
-              <span className="absolute inset-0 h-full w-0 bg-eco-green-700 transition-all duration-300 group-hover:w-full"></span>
-            </motion.button>
+            <Link to="/galeria">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-eco-green-600 hover:bg-eco-green-700 text-white px-6 py-3 rounded-md transition-colors text-lg relative overflow-hidden group"
+              >
+                <span className="relative z-10">Zobacz modele</span>
+                <span className="absolute inset-0 h-full w-0 bg-eco-green-700 transition-all duration-300 group-hover:w-full"></span>
+              </motion.button>
+            </Link>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="border-2 border-eco-green-600 text-eco-green-600 hover:bg-eco-green-50 px-6 py-3 rounded-md transition-colors text-lg"
+              onClick={() => setIsContactFormOpen(true)}
             >
               Umów konsultację
             </motion.button>
@@ -182,6 +187,12 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Contact Form Dialog */}
+      <ContactForm 
+        open={isContactFormOpen} 
+        onOpenChange={setIsContactFormOpen} 
+      />
     </section>
   );
 };

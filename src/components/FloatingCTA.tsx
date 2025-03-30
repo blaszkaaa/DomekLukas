@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 
 type FloatingCTAProps = {
@@ -12,7 +11,7 @@ const FloatingCTA = ({ onClick }: FloatingCTAProps) => {
         id="consultationFormButton"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="bg-eco-orange-600 hover:bg-eco-orange-700 text-white px-4 py-3 rounded-full shadow-lg flex items-center gap-2 transition-colors"
+        className="bg-eco-green-600 hover:bg-eco-green-700 text-white px-4 py-3 rounded-full shadow-lg flex items-center gap-2 transition-colors"
         onClick={onClick}
       >
         <span className="font-medium">Zamów konsultację</span>
