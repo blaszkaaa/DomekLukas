@@ -54,7 +54,7 @@ const Footer = () => {
           >
             <h3 className="text-xl font-semibold mb-4">Szybkie linki</h3>
             <ul className="space-y-2">
-              {['Strona główna', 'O nas', 'Technologia', 'Kontakt'].map((item) => (
+              {['Strona główna', 'O nas', 'Modele domów', 'Technologia', 'Blog', 'Kontakt'].map((item) => (
                 <li key={item}>
                   <motion.a 
                     href="#" 

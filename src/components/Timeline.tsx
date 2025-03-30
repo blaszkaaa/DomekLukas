@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Home, Palette, Factory, Truck, Clock, ChevronDown, ChevronUp } from 'lucide-react';
@@ -51,31 +52,6 @@ const Timeline = () => {
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0, height: 0 },
-    visible: {
-      opacity: 1,
-      height: 'auto',
-      transition: {
-        height: { duration: 0.3 },
-        opacity: { duration: 0.3, delay: 0.1 }
-      }
-    },
-    exit: {
-      opacity: 0,
-      height: 0,
-      transition: {
-        height: { duration: 0.3 },
-        opacity: { duration: 0.2 }
-      }
-    }
-  };
-
-  const contentVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.3, delay: 0.2 } }
-  };
-
   return (
     <section id="etapy" className="py-20 bg-eco-light">
       <div className="container mx-auto px-4">
@@ -94,8 +70,10 @@ const Timeline = () => {
         </motion.div>
 
         <div className="relative">
+          {/* Timeline Line */}
           <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-eco-green-200 z-0" />
 
+          {/* Timeline Steps */}
           <div className="space-y-12 relative z-10">
             {TIMELINE_STEPS.map((step, index) => (
               <motion.div
@@ -107,6 +85,7 @@ const Timeline = () => {
                 className="relative"
               >
                 <div className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center`}>
+                  {/* Timeline Circle */}
                   <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 flex items-center justify-center w-16 h-16 bg-eco-green-500 rounded-full shadow-lg mb-4 md:mb-0">
                     <motion.div
                       whileHover={{ rotate: 360 }}
@@ -116,6 +95,7 @@ const Timeline = () => {
                     </motion.div>
                   </div>
                   
+                  {/* Content */}
                   <div className={`w-full md:w-[calc(50%-3rem)] ${index % 2 === 0 ? 'md:text-right md:pr-12' : 'md:text-left md:pl-12'}`}>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
@@ -149,20 +129,13 @@ const Timeline = () => {
                       <AnimatePresence>
                         {expandedStep === step.id && (
                           <motion.div
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit"
-                            className="mt-4 pt-4 border-t border-gray-100 overflow-hidden"
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="mt-4 pt-4 border-t border-gray-100"
                           >
-                            <motion.p 
-                              variants={contentVariants}
-                              initial="hidden"
-                              animate="visible"
-                              className="text-gray-600"
-                            >
-                              {step.details}
-                            </motion.p>
+                            <p className="text-gray-600">{step.details}</p>
                           </motion.div>
                         )}
                       </AnimatePresence>

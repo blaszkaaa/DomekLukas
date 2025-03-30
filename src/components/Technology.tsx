@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { Thermometer, Home, Recycle, LucideProps } from 'lucide-react';
 
@@ -8,6 +9,7 @@ const TechCard = ({
   background,
   delay 
 }: {
+  // Update the icon type to match Lucide component type
   icon: React.ComponentType<LucideProps>;
   title: string;
   description: string;
@@ -20,117 +22,74 @@ const TechCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay }}
       viewport={{ once: true }}
-      whileHover={{ 
-        y: -10, 
-        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        transition: { duration: 0.3 }
-      }}
-      className={`${background} rounded-xl overflow-hidden shadow-lg transition-all duration-300 cursor-pointer`}
+      whileHover={{ y: -10, boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}
+      className={`${background} rounded-xl overflow-hidden shadow-lg transition-all duration-300`}
     >
-      <motion.div 
-        className="p-8"
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.2 }}
-      >
+      <div className="p-8">
         <motion.div
-          whileHover={{ rotate: 360, scale: 1.1 }}
-          transition={{ duration: 0.6 }}
+          whileHover={{ rotate: 360 }}
+          transition={{ duration: 1 }}
           className="w-16 h-16 flex items-center justify-center bg-white rounded-full shadow-md mb-6"
         >
           <Icon size={32} className="text-eco-green-600" />
         </motion.div>
-        <motion.h3 
-          className="text-xl font-bold text-eco-anthracite mb-3"
-          whileHover={{ scale: 1.05, color: '#4CAF50' }}
-          transition={{ duration: 0.2 }}
-        >
-          {title}
-        </motion.h3>
-        <motion.p 
-          className="text-gray-600"
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.2 }}
-        >
-          {description}
-        </motion.p>
-      </motion.div>
+        <h3 className="text-xl font-bold text-eco-anthracite mb-3">{title}</h3>
+        <p className="text-gray-600">{description}</p>
+      </div>
       
       <div className="px-8 pb-8">
         {title === 'Izolacja termiczna' && (
-          <motion.div 
-            className="relative mt-4"
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.05 }}
-          >
+          <div className="relative mt-4">
             <div className="h-20 bg-white rounded-md overflow-hidden relative">
               <div className="absolute inset-0 flex flex-col">
-                {['900', '700', '500', '300', '100'].map((shade, index) => (
-                  <motion.div 
-                    key={shade}
-                    className={`h-1/5 bg-eco-green-${shade} opacity-${80 - index * 10}`}
-                    initial={{ width: 0 }}
-                    whileInView={{ width: '100%' }}
-                    transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-                    viewport={{ once: true }}
-                  />
-                ))}
+                <div className="h-1/5 bg-eco-green-900 opacity-80" />
+                <div className="h-1/5 bg-eco-green-700 opacity-70" />
+                <div className="h-1/5 bg-eco-green-500 opacity-60" />
+                <div className="h-1/5 bg-eco-green-300 opacity-50" />
+                <div className="h-1/5 bg-eco-green-100 opacity-40" />
               </div>
-              <motion.div 
-                className="absolute inset-0 flex items-center justify-center"
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.1 }}
-              >
-                <span className="text-white font-bold text-lg">U = 0.10 W/(m²K)</span>
-              </motion.div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  viewport={{ once: true }}
+                  className="text-white font-bold text-lg"
+                >
+                  U = 0.10 W/(m²K)
+                </motion.div>
+              </div>
             </div>
             <div className="mt-2 text-sm text-gray-500 text-center">
               Wielowarstwowa izolacja termiczna
             </div>
-          </motion.div>
+          </div>
         )}
         
         {title === 'System smart home' && (
-          <motion.div 
-            className="mt-4 bg-white p-4 rounded-md"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="grid grid-cols-3 gap-2">
-              {['Światło', 'Temperatura', 'Energia', 'Bezpieczeństwo', 'Rolety', 'Multimedia'].map((item, index) => (
+          <div className="mt-4 bg-white p-4 rounded-md">
+            <motion.div 
+              className="grid grid-cols-3 gap-2"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              {['Światło', 'Temperatura', 'Energia', 'Bezpieczeństwo', 'Rolety', 'Multimedia'].map((item) => (
                 <motion.div
                   key={item}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5 + index * 0.1, duration: 0.3 }}
-                  viewport={{ once: true }}
                   whileHover={{ scale: 1.1, backgroundColor: '#4CAF50', color: 'white' }}
                   className="p-2 text-xs bg-gray-100 rounded text-center cursor-pointer transition-colors"
                 >
                   {item}
                 </motion.div>
               ))}
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         )}
         
         {title === 'Ekologiczne materiały' && (
-          <motion.div 
-            className="mt-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.05 }}
-          >
+          <div className="mt-4">
             <div className="h-6 bg-white rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
@@ -145,22 +104,20 @@ const TechCard = ({
               </motion.div>
             </div>
             <div className="mt-4">
-              {['Drewno z certyfikowanych lasów', 'Farby bez LZO', 'Materiały biodegradowalne'].map((item, index) => (
-                <motion.div 
-                  key={item}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 + index * 0.1, duration: 0.3 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.05, x: 5 }}
-                  className="flex items-center justify-between text-sm mt-1"
-                >
-                  <span>{item}</span>
-                  <span className="text-eco-green-600 font-medium">✓</span>
-                </motion.div>
-              ))}
+              <div className="flex items-center justify-between text-sm">
+                <span>Drewno z certyfikowanych lasów</span>
+                <span className="text-eco-green-600 font-medium">✓</span>
+              </div>
+              <div className="flex items-center justify-between text-sm mt-1">
+                <span>Farby bez LZO</span>
+                <span className="text-eco-green-600 font-medium">✓</span>
+              </div>
+              <div className="flex items-center justify-between text-sm mt-1">
+                <span>Materiały biodegradowalne</span>
+                <span className="text-eco-green-600 font-medium">✓</span>
+              </div>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
     </motion.div>
