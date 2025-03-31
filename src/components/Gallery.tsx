@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Separator } from "@/components/ui/separator";
@@ -54,11 +53,11 @@ const Gallery = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Nasza <span className="text-eco-green-600">Galeria</span></h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Nasza <span className="text-orange-600">Galeria</span></h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Zobacz zdjęcia naszych zrealizowanych projektów domów modułowych - zewnętrza i wnętrza.
           </p>
-          <Separator className="w-24 h-1 bg-eco-green-500 mx-auto mt-8" />
+          <Separator className="w-24 h-1 bg-orange-500 mx-auto mt-8" />
         </motion.div>
 
         <div className="mb-12">
@@ -130,7 +129,7 @@ const Gallery = () => {
         >
           <Link to="/galeria">
             <Button 
-              className="bg-eco-green-600 hover:bg-eco-green-700 group"
+              className="bg-orange-600 hover:bg-orange-700 group"
               size="lg"
             >
               Zobacz pełną galerię

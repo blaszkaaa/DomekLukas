@@ -1,4 +1,3 @@
-
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -14,7 +13,7 @@ const Footer = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-eco-green-300 to-eco-green-500 bg-clip-text text-transparent mb-4">
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-300 to-orange-500 bg-clip-text text-transparent mb-4">
               DomekLukas
             </h3>
             <p className="text-gray-300 mb-6">
@@ -23,21 +22,21 @@ const Footer = () => {
             <div className="flex space-x-4">
               <motion.a 
                 href="#" 
-                whileHover={{ y: -3, color: '#4CAF50' }} 
+                whileHover={{ y: -3, color: '#FF9800' }} 
                 className="text-gray-300 hover:text-white transition-colors"
               >
                 <Facebook size={20} />
               </motion.a>
               <motion.a 
                 href="#" 
-                whileHover={{ y: -3, color: '#4CAF50' }} 
+                whileHover={{ y: -3, color: '#FF9800' }} 
                 className="text-gray-300 hover:text-white transition-colors"
               >
                 <Instagram size={20} />
               </motion.a>
               <motion.a 
                 href="#" 
-                whileHover={{ y: -3, color: '#4CAF50' }} 
+                whileHover={{ y: -3, color: '#FF9800' }} 
                 className="text-gray-300 hover:text-white transition-colors"
               >
                 <Linkedin size={20} />
@@ -59,7 +58,7 @@ const Footer = () => {
                   <motion.a 
                     href="#" 
                     whileHover={{ x: 5 }} 
-                    className="text-gray-300 hover:text-eco-green-300 transition-colors flex items-center"
+                    className="text-gray-300 hover:text-orange-300 transition-colors flex items-center"
                   >
                     <span className="mr-2">›</span> {item}
                   </motion.a>
@@ -78,18 +77,18 @@ const Footer = () => {
             <h3 className="text-xl font-semibold mb-4">Kontakt</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
-                <MapPin size={20} className="mr-2 text-eco-green-400 mt-1" />
+                <MapPin size={20} className="mr-2 text-orange-400 mt-1" />
                 <span className="text-gray-300">
                   ul. Jana Pawła 2<br />
                   00-000 Słupca
                 </span>
               </li>
               <li className="flex items-center">
-                <Phone size={20} className="mr-2 text-eco-green-400" />
+                <Phone size={20} className="mr-2 text-orange-400" />
                 <span className="text-gray-300">+48 123 456 789</span>
               </li>
               <li className="flex items-center">
-                <Mail size={20} className="mr-2 text-eco-green-400" />
+                <Mail size={20} className="mr-2 text-orange-400" />
                 <span className="text-gray-300">kontakt@domeklukas.pl</span>
               </li>
             </ul>
@@ -110,13 +109,13 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Twój adres email"
-                className="bg-eco-dark border border-gray-700 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-eco-green-500 text-white"
+                className="bg-eco-dark border border-gray-700 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 text-white"
                 required
               />
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="bg-eco-green-600 hover:bg-eco-green-700 text-white px-4 py-2 rounded-md transition-colors"
+                className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md transition-colors"
               >
                 Subskrybuj
               </motion.button>

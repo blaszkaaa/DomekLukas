@@ -41,9 +41,9 @@ const TIMELINE_STEPS = [
 ];
 
 const Timeline = () => {
-    const [expandedStep, setExpandedStep] = useState<number | null>(null);
+    const [expandedStep, setExpandedStep] = useState(null);
 
-    const toggleStep = (stepId: number) => {
+    const toggleStep = (stepId) => {
         setExpandedStep(expandedStep === stepId ? null : stepId);
     };
 
@@ -111,7 +111,7 @@ const Timeline = () => {
 
                 <div className="relative">
                     {/* Timeline Line */}
-                    <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-eco-green-200 z-0" />
+                    <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-orange-200 z-0" />
 
                     {/* Timeline Steps */}
                     <motion.div
@@ -129,7 +129,7 @@ const Timeline = () => {
                             >
                                 <div className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center`}>
                                     {/* Timeline Circle */}
-                                    <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 flex items-center justify-center w-16 h-16 bg-eco-green-500 rounded-full shadow-lg mb-4 md:mb-0">
+                                    <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full shadow-lg mb-4 md:mb-0">
                                         <motion.div
                                             whileHover={{ rotate: 360 }}
                                             transition={{ duration: 1 }}
@@ -147,7 +147,7 @@ const Timeline = () => {
                                         >
                                             <div className="flex items-center justify-between mb-2">
                                                 <motion.h3 layoutId={`title-${step.id}`} className="text-xl font-semibold text-eco-anthracite">{step.title}</motion.h3>
-                                                <span className="flex items-center justify-center w-8 h-8 bg-eco-green-100 text-eco-green-600 rounded-full font-semibold">
+                                                <span className="flex items-center justify-center w-8 h-8 bg-orange-100 text-orange-600 rounded-full font-semibold">
                                                     {step.id}
                                                 </span>
                                             </div>
@@ -157,7 +157,7 @@ const Timeline = () => {
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
                                                 onClick={() => toggleStep(step.id)}
-                                                className="flex items-center gap-2 text-eco-green-600 hover:text-eco-green-700 font-medium"
+                                                className="flex items-center gap-2 text-orange-600 hover:text-orange-700 font-medium"
                                             >
                                                 {expandedStep === step.id ? (
                                                     <>

@@ -133,7 +133,7 @@ const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
               </Button>
               <Button 
                 type="submit"
-                className="bg-eco-green-600 hover:bg-eco-green-700"
+                className="bg-orange-600 hover:bg-orange-700"
               >
                 Wyślij
               </Button>

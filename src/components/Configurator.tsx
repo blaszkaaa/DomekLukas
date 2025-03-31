@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Smartphone } from 'lucide-react';
@@ -85,7 +84,7 @@ const Configurator = () => {
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                   <div className="flex items-center justify-between">
                     <h3 className="text-white text-2xl font-semibold">{stage.name}</h3>
-                    <span className="bg-eco-green-500 text-white px-3 py-1 rounded-full text-sm">
+                    <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm">
                       Etap {stage.id + 1}/6
                     </span>
                   </div>
@@ -100,7 +99,7 @@ const Configurator = () => {
               onClick={() => setShowARMessage(true)}
               className="absolute top-4 right-4 z-20 bg-white/80 backdrop-blur-sm hover:bg-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 transition-colors"
             >
-              <Smartphone size={18} className="text-eco-green-600" />
+              <Smartphone size={18} className="text-orange-600" />
               <span className="text-eco-anthracite font-medium">Zobacz w AR</span>
             </motion.button>
           </motion.div>
@@ -120,16 +119,16 @@ const Configurator = () => {
               step="1"
               value={currentStage}
               onChange={(e) => setCurrentStage(parseInt(e.target.value))}
-              className="w-full h-2 bg-eco-green-200 rounded-lg appearance-none cursor-pointer"
+              className="w-full h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer"
               style={{
-                backgroundImage: `linear-gradient(to right, #4CAF50 0%, #4CAF50 ${currentStage * 20}%, #E8F5E9 ${currentStage * 20}%, #E8F5E9 100%)`,
+                backgroundImage: `linear-gradient(to right, #FF9800 0%, #FF9800 ${currentStage * 20}%, #FFF3E0 ${currentStage * 20}%, #FFF3E0 100%)`,
               }}
             />
             <div className="flex justify-between mt-2 text-sm text-gray-500">
               {buildStages.map((stage) => (
                 <span 
                   key={stage.id}
-                  className={`cursor-pointer ${currentStage === stage.id ? 'text-eco-green-600 font-medium' : ''}`}
+                  className={`cursor-pointer ${currentStage === stage.id ? 'text-orange-600 font-medium' : ''}`}
                   onClick={() => setCurrentStage(stage.id)}
                 >
                   {stage.id + 1}
@@ -147,8 +146,8 @@ const Configurator = () => {
                 whileTap={{ y: 0 }}
                 className={`p-2 rounded-md transition-colors ${
                   currentStage === stage.id 
-                    ? 'bg-eco-green-600 text-white' 
-                    : 'bg-white hover:bg-eco-green-50 text-eco-anthracite'
+                    ? 'bg-orange-600 text-white' 
+                    : 'bg-white hover:bg-orange-50 text-eco-anthracite'
                 }`}
                 onClick={() => setCurrentStage(stage.id)}
               >
@@ -162,7 +161,7 @@ const Configurator = () => {
   );
 };
 
-const AnimatedMessage = ({ show, onClose }: { show: boolean; onClose: () => void }) => {
+const AnimatedMessage = ({ show, onClose }) => {
   return (
     <>
       {show && (
@@ -200,7 +199,7 @@ const AnimatedMessage = ({ show, onClose }: { show: boolean; onClose: () => void
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onClose}
-                className="bg-eco-green-600 hover:bg-eco-green-700 text-white px-4 py-2 rounded-md transition-colors"
+                className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md transition-colors"
               >
                 Zamknij
               </motion.button>

@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
@@ -16,7 +15,7 @@ const Address = () => {
             className="space-y-8"
           >
             <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-bold">Odwiedź nasze <span className="text-eco-green-600">biuro</span></h2>
+              <h2 className="text-4xl md:text-5xl font-bold">Odwiedź nasze <span className="text-orange-600">biuro</span></h2>
               <p className="text-lg text-gray-600">
                 Zapraszamy do odwiedzenia naszego biura projektowego, gdzie możesz zobaczyć makiety naszych domów modułowych
                 i porozmawiać z naszymi ekspertami.
@@ -26,8 +25,8 @@ const Address = () => {
             <Card className="border-none shadow-lg">
               <CardContent className="p-6 space-y-4">
                 <div className="flex items-start space-x-4">
-                  <div className="bg-eco-green-100 p-3 rounded-full">
-                    <MapPin className="h-6 w-6 text-eco-green-600" />
+                  <div className="bg-orange-100 p-3 rounded-full">
+                    <MapPin className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Adres</h3>
@@ -37,8 +36,8 @@ const Address = () => {
                 </div>
                 
                 <div className="flex items-start space-x-4">
-                  <div className="bg-eco-green-100 p-3 rounded-full">
-                    <Phone className="h-6 w-6 text-eco-green-600" />
+                  <div className="bg-orange-100 p-3 rounded-full">
+                    <Phone className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Telefon</h3>
@@ -47,8 +46,8 @@ const Address = () => {
                 </div>
                 
                 <div className="flex items-start space-x-4">
-                  <div className="bg-eco-green-100 p-3 rounded-full">
-                    <Mail className="h-6 w-6 text-eco-green-600" />
+                  <div className="bg-orange-100 p-3 rounded-full">
+                    <Mail className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Email</h3>
@@ -57,8 +56,8 @@ const Address = () => {
                 </div>
                 
                 <div className="flex items-start space-x-4">
-                  <div className="bg-eco-green-100 p-3 rounded-full">
-                    <Clock className="h-6 w-6 text-eco-green-600" />
+                  <div className="bg-orange-100 p-3 rounded-full">
+                    <Clock className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Godziny otwarcia</h3>

@@ -83,11 +83,11 @@ const Projects = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Nasze <span className="text-eco-green-600">Realizacje</span></h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Nasze <span className="text-orange-600">Realizacje</span></h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Sprawdź nasze najnowsze projekty domów modułowych, które zrealizowaliśmy dla naszych klientów w różnych lokalizacjach.
           </p>
-          <Separator className="w-24 h-1 bg-eco-orange-500 mx-auto mt-8" />
+          <Separator className="w-24 h-1 bg-orange-500 mx-auto mt-8" />
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -105,7 +105,7 @@ const Projects = () => {
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 <Card 
-                  className={`cursor-pointer transition-all duration-300 ${activeProject === index ? 'border-eco-orange-400 shadow-lg' : 'border-gray-200 hover:border-eco-orange-200'}`}
+                  className={`cursor-pointer transition-all duration-300 ${activeProject === index ? 'border-orange-400 shadow-lg' : 'border-gray-200 hover:border-orange-200'}`}
                   onClick={() => handleProjectClick(index)}
                 >
                   <CardHeader className="p-4">
@@ -214,7 +214,7 @@ const Projects = () => {
         >
           <Link to="/galeria">
             <Button 
-              className="bg-eco-orange-600 hover:bg-eco-orange-700 transition-all duration-300 hover:scale-105"
+              className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 hover:scale-105"
               size="lg"
             >
               Zobacz więcej realizacji

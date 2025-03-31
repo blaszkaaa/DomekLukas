@@ -58,7 +58,7 @@ const Hero = () => {
     <section id="home" className="relative min-h-screen flex flex-col md:flex-row items-center overflow-hidden pt-20">
       {/* Parallax Background */}
       <div className="absolute inset-0 -z-10 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-eco-green-100 to-white" />
+        <div className="absolute inset-0 bg-gradient-to-b from-orange-100 to-white" />
         <div className="h-full w-full bg-[url('https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center" />
       </div>
 
@@ -71,7 +71,7 @@ const Hero = () => {
             transition={{ duration: 0.6 }}
             className="mb-8"
           >
-            <h2 className="text-eco-green-600 text-xl md:text-2xl font-light mb-2">
+            <h2 className="text-orange-600 text-xl md:text-2xl font-light mb-2">
               {/* Rotating text with animation */}
               <div className="h-8 overflow-hidden">
                 {ROTATING_TEXTS.map((text, index) => (
@@ -86,7 +86,7 @@ const Hero = () => {
             </h2>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-eco-anthracite mb-4">
               Twój wymarzony dom gotowy w{' '}
-              <span className="text-eco-green-600 relative inline-block">
+              <span className="text-orange-600 relative inline-block">
                 <span className="animate-pulse">
                   <span className="countdown-number" data-count="30"></span>
                 </span>{' '}
@@ -108,16 +108,16 @@ const Hero = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-eco-green-600 hover:bg-eco-green-700 text-white px-6 py-3 rounded-md transition-colors text-lg relative overflow-hidden group"
+                className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-md transition-colors text-lg relative overflow-hidden group"
               >
                 <span className="relative z-10">Zobacz modele</span>
-                <span className="absolute inset-0 h-full w-0 bg-eco-green-700 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute inset-0 h-full w-0 bg-orange-700 transition-all duration-300 group-hover:w-full"></span>
               </motion.button>
             </Link>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="border-2 border-eco-green-600 text-eco-green-600 hover:bg-eco-green-50 px-6 py-3 rounded-md transition-colors text-lg"
+              className="border-2 border-orange-600 text-orange-600 hover:bg-orange-50 px-6 py-3 rounded-md transition-colors text-lg"
               onClick={() => setIsContactFormOpen(true)}
             >
               Umów konsultację

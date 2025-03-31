@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -39,7 +38,7 @@ const Navbar = () => {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="text-2xl font-bold bg-gradient-to-r from-eco-green-700 to-eco-green-500 bg-clip-text text-transparent"
+                className="text-2xl font-bold bg-gradient-to-r from-orange-700 to-orange-500 bg-clip-text text-transparent"
               >
                 DomekLukas
               </motion.div>
@@ -59,7 +58,7 @@ const Navbar = () => {
               <motion.a
                 key={item.label}
                 href={item.href}
-                className="text-eco-anthracite hover:text-eco-green-600 font-medium transition-colors"
+                className="text-eco-anthracite hover:text-orange-600 font-medium transition-colors"
                 whileHover={{ y: -2 }}
                 whileTap={{ y: 0 }}
               >
@@ -70,7 +69,7 @@ const Navbar = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-eco-green-600 hover:bg-eco-green-700 text-white px-5 py-2 rounded-md transition-colors"
+                className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-md transition-colors"
               >
                 Pełna galeria
               </motion.button>
@@ -110,14 +109,14 @@ const Navbar = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-eco-anthracite hover:text-eco-green-600 py-2 border-b border-gray-100"
+                className="text-eco-anthracite hover:text-orange-600 py-2 border-b border-gray-100"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </a>
             ))}
             <Link to="/galeria" onClick={() => setIsMenuOpen(false)}>
-              <button className="bg-eco-green-600 hover:bg-eco-green-700 text-white px-5 py-2 rounded-md transition-colors w-full">
+              <button className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-md transition-colors w-full">
                 Pełna galeria
               </button>
             </Link>

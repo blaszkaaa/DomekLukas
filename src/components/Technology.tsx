@@ -68,7 +68,7 @@ const TechCard = ({
           whileHover="hover"
           className="w-16 h-16 flex items-center justify-center bg-white rounded-full shadow-md mb-6"
         >
-          <Icon size={32} className="text-eco-green-600" />
+          <Icon size={32} className="text-orange-600" />
         </motion.div>
         <h3 className="text-xl font-bold text-eco-anthracite mb-3">{title}</h3>
         <p className="text-gray-600">{description}</p>
@@ -109,7 +109,7 @@ const TechCard = ({
                         duration: 0.4, 
                         delay: hasAnimated ? 0 : 0.5 + (index * 0.08) 
                       }}
-                      className={`h-1/5 bg-eco-green-${shade} opacity-${80 - (index * 10)}`} 
+                      className={`h-1/5 bg-orange-${shade} opacity-${80 - (index * 10)}`} 
                     />
                   ))}
                 </div>
@@ -174,7 +174,7 @@ const TechCard = ({
                     transition={{ delay: hasAnimated ? 0 : 0.5 + (index * 0.08), duration: 0.3 }}
                     whileHover={{ 
                       scale: 1.1, 
-                      backgroundColor: '#4CAF50', 
+                      backgroundColor: '#FF9800', 
                       color: 'white',
                       transition: { duration: 0.2, delay: 0 }
                     }}
@@ -219,7 +219,7 @@ const TechCard = ({
                     ease: "easeOut" 
                   }}
                   viewport={{ once: true }}
-                  className="h-full bg-eco-green-500 rounded-full flex items-center justify-end"
+                  className="h-full bg-orange-500 rounded-full flex items-center justify-end"
                 >
                   <motion.span 
                     initial={{ opacity: 0 }}
@@ -259,7 +259,7 @@ const TechCard = ({
                         type: "spring",
                         stiffness: 200
                       }}
-                      className="text-eco-green-600 font-medium"
+                      className="text-orange-600 font-medium"
                     >
                       ✓
                     </motion.span>
@@ -297,21 +297,21 @@ const Technology = () => {
             icon={Thermometer}
             title="Izolacja termiczna"
             description="Wielowarstwowa izolacja z wykorzystaniem materiałów o najwyższych parametrach termoizolacyjnych zapewnia minimalne straty ciepła."
-            background="bg-gradient-to-br from-eco-green-50 to-eco-green-100"
+            background="bg-gradient-to-br from-orange-50 to-orange-100"
             delay={0.1}
           />
           <TechCard
             icon={Home}
             title="System smart home"
             description="Inteligentny system zarządzania domem pozwala na kontrolę wszystkich urządzeń z poziomu aplikacji mobilnej."
-            background="bg-gradient-to-br from-eco-green-50 to-eco-green-100"
+            background="bg-gradient-to-br from-orange-50 to-orange-100"
             delay={0.2}
           />
           <TechCard
             icon={Recycle}
             title="Ekologiczne materiały"
             description="Wykorzystujemy materiały przyjazne dla środowiska, pochodzące w dużej mierze z recyklingu lub ze zrównoważonych źródeł."
-            background="bg-gradient-to-br from-eco-green-50 to-eco-green-100"
+            background="bg-gradient-to-br from-orange-50 to-orange-100"
             delay={0.3}
           />
         </div>
