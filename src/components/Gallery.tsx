@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 const galleryImages = [
   {
     id: 1,
-    src: "https://images.unsplash.com/photo-1601564921647-b446989a7e22?q=80&w=2874&auto=format&fit=crop",
-    alt: "Dom modułowy z dużymi oknami"
+    src: "https://images.unsplash.com/photo-1463797221720-6b07e6426c24?q=80&w=2071&auto=format&fit=crop",
+    alt: "Wnętrze domu modułowego - salon"
   },
   {
     id: 2,
@@ -20,8 +20,8 @@ const galleryImages = [
   },
   {
     id: 3,
-    src: "https://images.unsplash.com/photo-1583608205776-babe4e9fe4c7?q=80&w=2070&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - kuchnia"
+    src: "https://images.unsplash.com/photo-1463797221720-6b07e6426c24?q=80&w=2071&auto=format&fit=crop",
+    alt: "Wnętrze domu modułowego - salon"
   },
   {
     id: 4,
