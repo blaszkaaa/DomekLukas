@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -47,26 +47,76 @@ const categories = ['Wszystkie', 'Zewnętrze', 'Wnętrze', 'Wizualizacje'];
 const GalleryPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('Wszystkie');
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [imagesLoaded, setImagesLoaded] = useState<Record<number, boolean>>({});
+  const touchStartX = useRef<number | null>(null);
+  const [lightboxDimensions, setLightboxDimensions] = useState({ width: 0, height: 0 });
 
   const filteredImages = selectedCategory === 'Wszystkie'
     ? galleryImages
     : galleryImages.filter((img) => img.category === selectedCategory);
 
-  // zamknij lightbox przy zmianie kategorii
+  // Zamknij lightbox przy zmianie kategorii
   useEffect(() => {
     setSelectedIndex(null);
   }, [selectedCategory]);
 
-  // obsługa klawiszy ← → Esc
+  // Obliczanie wymiarów dla lightboxa przy otwarciu i zmianie rozmiaru okna
+  useEffect(() => {
+    const updateLightboxDimensions = () => {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      
+      // Oblicz stałe wymiary kontenera dla lightboxa
+      // Zachowaj stosunek 16:9 dla większej spójności
+      const aspectRatio = 16 / 9;
+      
+      let width, height;
+      
+      if (viewportWidth > 768) {
+        // Na większych ekranach używamy 80% wysokości i szerokość zgodną z proporcją
+        height = viewportHeight * 0.8;
+        width = height * aspectRatio;
+        
+        // Upewnij się, że szerokość nie przekracza 80% szerokości ekranu
+        if (width > viewportWidth * 0.8) {
+          width = viewportWidth * 0.8;
+          height = width / aspectRatio;
+        }
+      } else {
+        // Na urządzeniach mobilnych używamy 90% szerokości
+        width = viewportWidth * 0.9;
+        height = width / aspectRatio;
+        
+        // Upewnij się, że wysokość nie przekracza 80% wysokości ekranu
+        if (height > viewportHeight * 0.8) {
+          height = viewportHeight * 0.8;
+          width = height * aspectRatio;
+        }
+      }
+      
+      setLightboxDimensions({ width, height });
+    };
+    
+    if (selectedIndex !== null) {
+      updateLightboxDimensions();
+      window.addEventListener('resize', updateLightboxDimensions);
+    }
+    
+    return () => {
+      window.removeEventListener('resize', updateLightboxDimensions);
+    };
+  }, [selectedIndex]);
+
+  // Obsługa klawiszy ← → Esc
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedIndex === null) return;
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        showPrev(e as any);
+        showPrev();
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
-        showNext(e as any);
+        showNext();
       } else if (e.key === 'Escape') {
         closeLightbox();
       }
@@ -75,34 +125,84 @@ const GalleryPage = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedIndex, filteredImages]);
 
+  // Funkcja do ładowania obrazów
+  const handleImageLoad = (id: number) => {
+    setImagesLoaded(prev => ({ ...prev, [id]: true }));
+  };
+
   const openLightbox = (index: number) => setSelectedIndex(index);
   const closeLightbox = () => setSelectedIndex(null);
 
-  const showPrev = (e: React.MouseEvent | KeyboardEvent) => {
-    e.stopPropagation();
-    if (!filteredImages.length) return;
-    const newIndex = selectedIndex! > 0
-      ? selectedIndex! - 1
+  const showPrev = () => {
+    if (!filteredImages.length || selectedIndex === null) return;
+    const newIndex = selectedIndex > 0
+      ? selectedIndex - 1
       : filteredImages.length - 1;
     setSelectedIndex(newIndex);
   };
 
-  const showNext = (e: React.MouseEvent | KeyboardEvent) => {
-    e.stopPropagation();
-    if (!filteredImages.length) return;
-    const newIndex = selectedIndex! < filteredImages.length - 1
-      ? selectedIndex! + 1
+  const showNext = () => {
+    if (!filteredImages.length || selectedIndex === null) return;
+    const newIndex = selectedIndex < filteredImages.length - 1
+      ? selectedIndex + 1
       : 0;
     setSelectedIndex(newIndex);
   };
 
-  const selectedImage =
-    selectedIndex !== null ? filteredImages[selectedIndex] : null;
+  // Obsługa gestów dotykowych dla mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+    
+    // Swipe lewo/prawo (z progiem 50px)
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        showNext(); // Swipe left -> następne zdjęcie
+      } else {
+        showPrev(); // Swipe right -> poprzednie zdjęcie
+      }
+    }
+    
+    touchStartX.current = null;
+  };
+
+  const selectedImage = selectedIndex !== null ? filteredImages[selectedIndex] : null;
+
+  // Preloadowanie sąsiednich obrazów
+  useEffect(() => {
+    if (selectedIndex === null || !filteredImages.length) return;
+    
+    const preloadImage = (index: number) => {
+      const img = new Image();
+      img.src = filteredImages[index].src;
+    };
+    
+    // Preload next image
+    if (selectedIndex < filteredImages.length - 1) {
+      preloadImage(selectedIndex + 1);
+    } else {
+      // Preload first image when at the end
+      preloadImage(0);
+    }
+    
+    // Preload previous image
+    if (selectedIndex > 0) {
+      preloadImage(selectedIndex - 1);
+    } else {
+      // Preload last image when at the beginning
+      preloadImage(filteredImages.length - 1);
+    }
+  }, [selectedIndex, filteredImages]);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-
       <main className="flex-grow pt-24 pb-20">
         <div className="container mx-auto px-4 md:px-6">
           {/* Nagłówek */}
@@ -140,8 +240,11 @@ const GalleryPage = () => {
             ))}
           </div>
 
-          {/* Siatka zdjęć z jednolitą proporcją 3:2 */}
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {/* Siatka zdjęć z poprawioną jednolitą proporcją */}
+          <motion.div 
+            layout 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
             <AnimatePresence>
               {filteredImages.map((img, idx) => (
                 <motion.div
@@ -151,13 +254,21 @@ const GalleryPage = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.5 }}
-                  className="cursor-pointer group relative overflow-hidden rounded-lg shadow-md aspect-[3/2]"
+                  className="relative overflow-hidden rounded-lg shadow-md bg-gray-100 cursor-pointer group"
+                  style={{ aspectRatio: '3/2' }}
                   onClick={() => openLightbox(idx)}
                 >
+                  {/* Placeholder podczas ładowania */}
+                  {!imagesLoaded[img.id] && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+                      <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
                   <img
                     src={img.src}
                     alt={img.alt}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    onLoad={() => handleImageLoad(img.id)}
+                    className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 ${imagesLoaded[img.id] ? 'opacity-100' : 'opacity-0'}`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                     <div>
@@ -178,66 +289,104 @@ const GalleryPage = () => {
         </div>
       </main>
 
-      {/* Lightbox */}
+      {/* Lightbox z obsługą dotyku i stałymi wymiarami */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
             onClick={closeLightbox}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             {/* Zamknij */}
             <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="absolute top-6 right-6 bg-white/10 text-white rounded-full p-2 hover:bg-white/20"
+              className="absolute top-4 right-4 bg-white/10 text-white rounded-full p-2 hover:bg-white/20 z-[60]"
               onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
             >
               <X size={24} />
             </motion.button>
 
-            {/* Poprzedni */}
+            {/* Przyciski nawigacyjne w lightboxie - widoczne tylko na większych ekranach */}
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute left-6 top-1/2 transform -translate-y-1/2 bg-white/10 text-white rounded-full p-2 hover:bg-white/20"
-              onClick={showPrev}
+              className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/10 text-white rounded-full p-2 hover:bg-white/20 z-[60]"
+              onClick={(e) => { e.stopPropagation(); showPrev(); }}
             >
               <ChevronLeft size={32} />
             </motion.button>
 
-            {/* Następny */}
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-white/10 text-white rounded-full p-2 hover:bg-white/20"
-              onClick={showNext}
+              className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/10 text-white rounded-full p-2 hover:bg-white/20 z-[60]"
+              onClick={(e) => { e.stopPropagation(); showNext(); }}
             >
               <ChevronRight size={32} />
             </motion.button>
 
+            {/* Nawigacja dla mobilnych - przyciski na dole */}
+            <div className="md:hidden flex absolute bottom-4 left-0 right-0 justify-center space-x-4 z-[60]">
+              <button 
+                className="bg-white/10 text-white rounded-full p-3 hover:bg-white/20"
+                onClick={(e) => { e.stopPropagation(); showPrev(); }}
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <button 
+                className="bg-white/10 text-white rounded-full p-3 hover:bg-white/20"
+                onClick={(e) => { e.stopPropagation(); showNext(); }}
+              >
+                <ChevronRight size={24} />
+              </button>
+            </div>
+
+            {/* Kontener zdjęcia ze stałymi wymiarami i proporcjami */}
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.5, opacity: 0 }}
-              className="max-w-7xl max-h-[90vh] relative"
+              className="relative"
+              style={{ 
+                width: `${lightboxDimensions.width}px`, 
+                height: `${lightboxDimensions.height}px` 
+              }}
               onClick={(e) => e.stopPropagation()}
             >
-              <img
-                src={selectedImage.src}
-                alt={selectedImage.alt}
-                className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
-              />
+              {/* Kontener dla zdjęcia ze stałymi wymiarami */}
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  className="w-full h-full object-contain"
+                  style={{ 
+                    maxWidth: '100%', 
+                    maxHeight: '100%',
+                    display: 'block',
+                    margin: '0 auto'
+                  }}
+                />
+              </div>
+              
+              {/* Informacje o zdjęciu */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black p-4">
                 <p className="text-white text-lg font-medium">{selectedImage.alt}</p>
                 <p className="text-white/80 text-sm">{selectedImage.category}</p>
               </div>
             </motion.div>
+            
+            {/* Numeracja zdjęć */}
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-sm py-1 px-3 rounded-full">
+              {selectedIndex + 1} / {filteredImages.length}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
