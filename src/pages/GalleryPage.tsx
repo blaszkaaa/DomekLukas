@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { Separator } from '@/components/ui/separator';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 
 interface GalleryImage {
   id: number;
@@ -50,6 +50,15 @@ const GalleryPage = () => {
   const [imagesLoaded, setImagesLoaded] = useState<Record<number, boolean>>({});
   const touchStartX = useRef<number | null>(null);
   const [lightboxDimensions, setLightboxDimensions] = useState({ width: 0, height: 0 });
+  
+  // Stany do obsługi przybliżania
+  const [scale, setScale] = useState(1);
+  const [lastDistance, setLastDistance] = useState(0);
+  const [isPinching, setIsPinching] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const scaleMotionValue = useMotionValue(1);
+  const xMotionValue = useMotionValue(0);
+  const yMotionValue = useMotionValue(0);
 
   const filteredImages = selectedCategory === 'Wszystkie'
     ? galleryImages
@@ -107,6 +116,11 @@ const GalleryPage = () => {
     };
   }, [selectedIndex]);
 
+  // Reset stanu przybliżenia przy zmianie obrazu
+  useEffect(() => {
+    resetZoom();
+  }, [selectedIndex]);
+
   // Obsługa klawiszy ← → Esc
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -130,11 +144,45 @@ const GalleryPage = () => {
     setImagesLoaded(prev => ({ ...prev, [id]: true }));
   };
 
-  const openLightbox = (index: number) => setSelectedIndex(index);
-  const closeLightbox = () => setSelectedIndex(null);
+  const openLightbox = (index: number) => {
+    setSelectedIndex(index);
+    resetZoom();
+  };
+  
+  const closeLightbox = () => {
+    setSelectedIndex(null);
+    resetZoom();
+  };
+
+  const resetZoom = () => {
+    setScale(1);
+    setPosition({ x: 0, y: 0 });
+    scaleMotionValue.set(1);
+    xMotionValue.set(0);
+    yMotionValue.set(0);
+  };
+
+  const zoomIn = () => {
+    const newScale = Math.min(scale + 0.25, 4);
+    setScale(newScale);
+    scaleMotionValue.set(newScale);
+  };
+
+  const zoomOut = () => {
+    const newScale = Math.max(scale - 0.25, 1);
+    setScale(newScale);
+    scaleMotionValue.set(newScale);
+    
+    // Resetuj pozycję, jeśli wracamy do skali 1
+    if (newScale === 1) {
+      setPosition({ x: 0, y: 0 });
+      xMotionValue.set(0);
+      yMotionValue.set(0);
+    }
+  };
 
   const showPrev = () => {
-    if (!filteredImages.length || selectedIndex === null) return;
+    if (!filteredImages.length || selectedIndex === null || scale > 1) return;
     const newIndex = selectedIndex > 0
       ? selectedIndex - 1
       : filteredImages.length - 1;
@@ -142,20 +190,88 @@ const GalleryPage = () => {
   };
 
   const showNext = () => {
-    if (!filteredImages.length || selectedIndex === null) return;
+    if (!filteredImages.length || selectedIndex === null || scale > 1) return;
     const newIndex = selectedIndex < filteredImages.length - 1
       ? selectedIndex + 1
       : 0;
     setSelectedIndex(newIndex);
   };
 
-  // Obsługa gestów dotykowych dla mobile
+  // Obliczanie odległości między dwoma punktami dotyku
+  const getDistance = (touches: React.TouchList): number => {
+    if (touches.length < 2) return 0;
+    
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    
+    return Math.sqrt(dx * dx + dy * dy);
+  };
+  
+  // Obsługa gestów dotykowych dla przybliżania/oddalania
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
+    // Jeśli to pojedynczy dotyk - zapisz pozycję do swipe'a
+    if (e.touches.length === 1) {
+      touchStartX.current = e.touches[0].clientX;
+      return;
+    }
+    
+    // Jeśli to pinch (dwa palce)
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      setIsPinching(true);
+      
+      // Zapisz początkową odległość między palcami
+      const initialDistance = getDistance(e.touches);
+      setLastDistance(initialDistance);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    // Jeśli to przybliżanie (dwa palce)
+    if (e.touches.length === 2 && isPinching) {
+      e.preventDefault();
+      
+      // Oblicz nową odległość między palcami
+      const currentDistance = getDistance(e.touches);
+      
+      // Oblicz współczynnik zmiany skali
+      const delta = currentDistance / lastDistance;
+      
+      if (lastDistance > 0 && delta !== 1) {
+        const newScale = Math.min(Math.max(scale * delta, 1), 4);
+        setScale(newScale);
+        scaleMotionValue.set(newScale);
+        setLastDistance(currentDistance);
+      }
+    } 
+    // Jeśli obraz jest przybliżony, umożliw przeciąganie jednym palcem
+    else if (e.touches.length === 1 && scale > 1) {
+      const dx = e.touches[0].clientX - (touchStartX.current || 0);
+      const dy = e.touches[0].clientY - e.touches[0].clientY;
+      
+      // Ograniczenia ruchu zależne od przybliżenia
+      const maxOffset = (scale - 1) * 150;
+      
+      const newX = Math.min(Math.max(position.x + dx / 5, -maxOffset), maxOffset);
+      const newY = Math.min(Math.max(position.y + dy / 5, -maxOffset), maxOffset);
+      
+      setPosition({ x: newX, y: newY });
+      xMotionValue.set(newX);
+      yMotionValue.set(newY);
+      
+      touchStartX.current = e.touches[0].clientX;
+    }
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
+    if (isPinching) {
+      setIsPinching(false);
+      setLastDistance(0);
+      return;
+    }
+    
+    // Obsługa zwykłego swipe'a tylko jeśli nie jesteśmy przybliżeni
+    if (touchStartX.current === null || scale > 1) return;
     
     const touchEndX = e.changedTouches[0].clientX;
     const diff = touchStartX.current - touchEndX;
@@ -170,6 +286,16 @@ const GalleryPage = () => {
     }
     
     touchStartX.current = null;
+  };
+
+  // Obsługa podwójnego tapnięcia do przybliżania/oddalania
+  const handleDoubleTap = () => {
+    if (scale > 1) {
+      resetZoom();
+    } else {
+      zoomIn();
+      zoomIn();
+    }
   };
 
   const selectedImage = selectedIndex !== null ? filteredImages[selectedIndex] : null;
@@ -289,7 +415,7 @@ const GalleryPage = () => {
         </div>
       </main>
 
-      {/* Lightbox z obsługą dotyku i stałymi wymiarami */}
+      {/* Lightbox z obsługą dotyku i przybliżania */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
@@ -297,9 +423,11 @@ const GalleryPage = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center"
-            onClick={closeLightbox}
+            onClick={() => scale === 1 ? closeLightbox() : resetZoom()}
             onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            style={{ touchAction: 'none' }} // Zapobiegaj domyślnym gestom przeglądarki
           >
             {/* Zamknij */}
             <motion.button
@@ -312,80 +440,143 @@ const GalleryPage = () => {
               <X size={24} />
             </motion.button>
 
-            {/* Przyciski nawigacyjne w lightboxie - widoczne tylko na większych ekranach */}
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/10 text-white rounded-full p-2 hover:bg-white/20 z-[60]"
-              onClick={(e) => { e.stopPropagation(); showPrev(); }}
-            >
-              <ChevronLeft size={32} />
-            </motion.button>
-
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/10 text-white rounded-full p-2 hover:bg-white/20 z-[60]"
-              onClick={(e) => { e.stopPropagation(); showNext(); }}
-            >
-              <ChevronRight size={32} />
-            </motion.button>
-
-            {/* Nawigacja dla mobilnych - przyciski na dole */}
-            <div className="md:hidden flex absolute bottom-4 left-0 right-0 justify-center space-x-4 z-[60]">
-              <button 
-                className="bg-white/10 text-white rounded-full p-3 hover:bg-white/20"
-                onClick={(e) => { e.stopPropagation(); showPrev(); }}
+            {/* Przyciski do przybliżania/oddalania */}
+            <div className="absolute top-4 left-4 flex space-x-2 z-[60]">
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="bg-white/10 text-white rounded-full p-2 hover:bg-white/20"
+                onClick={(e) => { e.stopPropagation(); zoomIn(); }}
+                disabled={scale >= 4}
               >
-                <ChevronLeft size={24} />
-              </button>
-              <button 
-                className="bg-white/10 text-white rounded-full p-3 hover:bg-white/20"
-                onClick={(e) => { e.stopPropagation(); showNext(); }}
+                <ZoomIn size={22} />
+              </motion.button>
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="bg-white/10 text-white rounded-full p-2 hover:bg-white/20"
+                onClick={(e) => { e.stopPropagation(); zoomOut(); }}
+                disabled={scale <= 1}
               >
-                <ChevronRight size={24} />
-              </button>
+                <ZoomOut size={22} />
+              </motion.button>
             </div>
 
-            {/* Kontener zdjęcia ze stałymi wymiarami i proporcjami */}
+            {/* Przyciski nawigacyjne w lightboxie - widoczne tylko na większych ekranach i gdy nie jest przybliżone */}
+            {scale === 1 && (
+              <>
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="hidden md:block absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/10 text-white rounded-full p-2 hover:bg-white/20 z-[60]"
+                  onClick={(e) => { e.stopPropagation(); showPrev(); }}
+                >
+                  <ChevronLeft size={32} />
+                </motion.button>
+
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="hidden md:block absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/10 text-white rounded-full p-2 hover:bg-white/20 z-[60]"
+                  onClick={(e) => { e.stopPropagation(); showNext(); }}
+                >
+                  <ChevronRight size={32} />
+                </motion.button>
+              </>
+            )}
+
+            {/* Nawigacja dla mobilnych - przyciski na dole */}
+            {scale === 1 && (
+              <div className="md:hidden flex absolute bottom-4 left-0 right-0 justify-center space-x-4 z-[60]">
+                <button 
+                  className="bg-white/10 text-white rounded-full p-3 hover:bg-white/20"
+                  onClick={(e) => { e.stopPropagation(); showPrev(); }}
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button 
+                  className="bg-white/10 text-white rounded-full p-3 hover:bg-white/20"
+                  onClick={(e) => { e.stopPropagation(); showNext(); }}
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </div>
+            )}
+
+            {/* Kontener zdjęcia ze stałymi wymiarami i obsługą przybliżania */}
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.5, opacity: 0 }}
-              className="relative"
-              style={{ 
-                width: `${lightboxDimensions.width}px`, 
-                height: `${lightboxDimensions.height}px` 
+              className="relative overflow-hidden"
+              style={{
+                width: `${lightboxDimensions.width}px`,
+                height: `${lightboxDimensions.height}px`
               }}
               onClick={(e) => e.stopPropagation()}
+              onDoubleClick={(e) => { e.stopPropagation(); handleDoubleTap(); }}
             >
-              {/* Kontener dla zdjęcia ze stałymi wymiarami */}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+              {/* Kontener dla zdjęcia z przybliżaniem i przesuwaniem */}
+              <motion.div
+                className="w-full h-full flex items-center justify-center"
+                style={{
+                  scale: scaleMotionValue,
+                  x: xMotionValue,
+                  y: yMotionValue,
+                }}
+                drag={scale > 1}
+                dragConstraints={{
+                  left: -(scale - 1) * lightboxDimensions.width / 2,
+                  right: (scale - 1) * lightboxDimensions.width / 2,
+                  top: -(scale - 1) * lightboxDimensions.height / 2,
+                  bottom: (scale - 1) * lightboxDimensions.height / 2
+                }}
+                dragElastic={0.1} // Mniejsza wartość = mniejsza elastyczność
+                dragTransition={{ power: 0.2, timeConstant: 200 }} // Płynniejsze przeciąganie
+                onDragEnd={(e, info) => {
+                  // Aktualizuj stan pozycji po przeciągnięciu
+                  setPosition({
+                    x: xMotionValue.get(),
+                    y: yMotionValue.get()
+                  });
+                }}
+              >
                 <img
                   src={selectedImage.src}
                   alt={selectedImage.alt}
-                  className="w-full h-full object-contain"
-                  style={{ 
-                    maxWidth: '100%', 
-                    maxHeight: '100%',
-                    display: 'block',
-                    margin: '0 auto'
-                  }}
+                  className="w-full h-full object-contain select-none"
+                  draggable="false"
                 />
-              </div>
+              </motion.div>
               
               {/* Informacje o zdjęciu */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black p-4">
                 <p className="text-white text-lg font-medium">{selectedImage.alt}</p>
                 <p className="text-white/80 text-sm">{selectedImage.category}</p>
               </div>
+
+              {/* Informacja o przybliżeniu */}
+              {scale > 1 && (
+                <div className="absolute top-4 right-4 bg-black/50 text-white text-xs py-1 px-2 rounded-full">
+                  {Math.round(scale * 100)}%
+                </div>
+              )}
             </motion.div>
             
             {/* Numeracja zdjęć */}
             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-sm py-1 px-3 rounded-full">
               {selectedIndex + 1} / {filteredImages.length}
+            </div>
+            
+            {/* Wskazówka dla użytkownika */}
+            <div className="absolute bottom-16 left-0 right-0 text-center">
+              <p className="text-white/60 text-xs">
+                {scale > 1 ? 'Kliknij dwa razy, aby zresetować przybliżenie' : 'Użyj dwóch palców, aby przybliżyć'}
+              </p>
             </div>
           </motion.div>
         )}
