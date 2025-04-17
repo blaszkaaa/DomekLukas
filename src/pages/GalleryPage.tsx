@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -15,94 +14,36 @@ interface GalleryImage {
 }
 
 const galleryImages: GalleryImage[] = [
-  {
-    id: 1,
-    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-    alt: "Dom modułowy z tarasem",
-    category: "Zewnętrze"
-  },
-  {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1463797221720-6b07e6426c24?q=80&w=2071&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - salon",
-    category: "Wnętrze"
-  },
-  {
-    id: 3,
-    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-    alt: "Dom modułowy z tarasem",
-    category: "Zewnętrze"
-  },
-  {
-    id: 4,
-    src: "https://images.unsplash.com/photo-1604014237800-1c9102c219da?q=80&w=2070&auto=format&fit=crop",
-    alt: "Dom modułowy z drewnianą elewacją",
-    category: "Zewnętrze"
-  },
-  {
-    id: 5,
-    src: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2070&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - sypialnia",
-    category: "Wnętrze"
-  },
-  {
-    id: 6,
-    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-    alt: "Dom modułowy z tarasem",
-    category: "Zewnętrze"
-  },
-  {
-    id: 7,
-    src: "https://images.unsplash.com/photo-1492889971304-ac16ab4a4a5a?q=80&w=2074&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - łazienka",
-    category: "Wnętrze"
-  },
-  {
-    id: 8,
-    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-    alt: "Dom modułowy z tarasem",
-    category: "Zewnętrze"
-  },
-  {
-    id: 9,
-    src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=80&w=2070&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - przestrzeń dzienna",
-    category: "Wnętrze"
-  },
-  {
-    id: 10,
-    src: "https://images.unsplash.com/photo-1600210491369-e753d80a41f3?q=80&w=2074&auto=format&fit=crop",
-    alt: "Dom modułowy nad jeziorem",
-    category: "Zewnętrze"
-  },
-  {
-    id: 11,
-    src: "https://images.unsplash.com/photo-1495433324511-bf8e92934d90?q=80&w=2070&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - gabinet",
-    category: "Wnętrze"
-  },
-  {
-    id: 12,
-    src: "https://images.unsplash.com/photo-1615874959474-d609969a20ed?q=80&w=2080&auto=format&fit=crop",
-    alt: "Dom modułowy - konstrukcja",
-    category: "Proces budowy"
-  }
+  { id: 1, src: "https://i.ibb.co/rGt9tgxx/1.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 2, src: "https://i.ibb.co/cc9K0q4N/2.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 3, src: "https://i.ibb.co/qXWNt6c/7.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 4, src: "https://i.ibb.co/ynmbfw9y/DJI-0150.jpg", alt: "Zewnętrze domu modułowego", category: "Zewnętrze" },
+  { id: 5, src: "https://i.ibb.co/F4xBYTZm/DJI-0152.jpg", alt: "Zewnętrze domu modułowego", category: "Zewnętrze" },
+  { id: 6, src: "https://i.ibb.co/k2p6BysQ/5.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 7, src: "https://i.ibb.co/TBVf9QsJ/6.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 8, src: "https://i.ibb.co/cKndFJzB/8.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 9, src: "https://i.ibb.co/rGkHTsh5/9.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 10, src: "https://i.ibb.co/MDGMTQ0H/10.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 11, src: "https://i.ibb.co/d0ksh7Ls/11.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 12, src: "https://i.ibb.co/whZz9vB9/12.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
+  { id: 13, src: "https://i.ibb.co/tMCmsWn4/13.jpg", alt: "Wnętrze domu modułowego", category: "Wnętrze" },
 ];
 
-const categories = ["Wszystkie", "Zewnętrze", "Wnętrze", "Proces budowy"];
+const categories = ["Wszystkie", "Zewnętrze", "Wnętrze"];
 
 const GalleryPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Wszystkie");
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
-  const filteredImages = selectedCategory === "Wszystkie" 
-    ? galleryImages 
-    : galleryImages.filter(img => img.category === selectedCategory);
+  const filteredImages =
+    selectedCategory === "Wszystkie"
+      ? galleryImages
+      : galleryImages.filter((img) => img.category === selectedCategory);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-grow pt-24 pb-20">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
@@ -111,11 +52,13 @@ const GalleryPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Galeria Naszych <span className="text-eco-green-600">Realizacji</span></h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Galeria Naszych <span className="text-orange-600">Realizacji</span>
+            </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Przeglądaj zdjęcia naszych zrealizowanych projektów domów modułowych.
+              Przeglądaj zdjęcia naszych projektów domów modułowych.
             </p>
-            <Separator className="w-24 h-1 bg-eco-green-500 mx-auto mt-8" />
+            <Separator className="w-24 h-1 bg-orange-500 mx-auto mt-8" />
           </motion.div>
 
           <div className="flex flex-wrap justify-center gap-4 mb-10">
@@ -126,7 +69,7 @@ const GalleryPage = () => {
                 whileTap={{ scale: 0.95 }}
                 className={`px-6 py-2 rounded-full ${
                   selectedCategory === category
-                    ? 'bg-eco-green-600 text-white'
+                    ? 'bg-orange-600 text-white'
                     : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                 }`}
                 onClick={() => setSelectedCategory(category)}
@@ -136,10 +79,7 @@ const GalleryPage = () => {
             ))}
           </div>
 
-          <motion.div
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
+          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <AnimatePresence>
               {filteredImages.map((image) => (
                 <motion.div
@@ -152,7 +92,7 @@ const GalleryPage = () => {
                   className="cursor-pointer group relative overflow-hidden rounded-lg shadow-md"
                   onClick={() => setSelectedImage(image)}
                 >
-                  <AspectRatio ratio={3/2}>
+                  <AspectRatio ratio={3 / 2}>
                     <img
                       src={image.src}
                       alt={image.alt}
@@ -191,22 +131,23 @@ const GalleryPage = () => {
             <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
               className="absolute top-6 right-6 bg-white/10 text-white rounded-full p-2 hover:bg-white/20"
             >
               <X size={24} />
             </motion.button>
 
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              className="max-w-5xl max-h-[80vh] relative"
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1.2, opacity: 1 }}
+              exit={{ scale: 0.5, opacity: 0 }}
+              className="max-w-7xl max-h-[90vh] relative"
               onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={selectedImage.src}
                 alt={selectedImage.alt}
-                className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+                className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black p-4">
                 <p className="text-white text-lg font-medium">{selectedImage.alt}</p>

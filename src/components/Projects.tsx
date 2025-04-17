@@ -23,7 +23,7 @@ const projectsData: Project[] = [
     description: "Nowoczesny dom modułowy z 3 sypialniami, energooszczędny i ekologiczny.",
     location: "Mazury, Polska",
     year: "2023",
-    image: "https://images.unsplash.com/photo-1576941089067-2de3c901e126?q=80&w=2956&auto=format&fit=crop"
+    image: "https://i.ibb.co/ynmbfw9y/DJI-0150.jpg"
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ const projectsData: Project[] = [
     description: "Komfortowy domek modułowy idealny na wypoczynek dla rodziny 4-osobowej.",
     location: "Karkonosze, Polska",
     year: "2023",
-    image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2940&auto=format&fit=crop"
+    image: "https://i.ibb.co/F4xBYTZm/DJI-0152.jpg"
   },
   {
     id: 3,
@@ -39,7 +39,7 @@ const projectsData: Project[] = [
     description: "Przestrzeń biurowa stworzona z 4 modułów, pełna światła i ergonomiczna.",
     location: "Warszawa, Polska",
     year: "2022",
-    image: "https://images.unsplash.com/photo-1605146769289-440113cc3d00?q=80&w=2940&auto=format&fit=crop"
+    image: "https://i.ibb.co/d0ksh7Ls/11.jpg"
   }
 ];
 

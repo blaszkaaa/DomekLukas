@@ -10,34 +10,40 @@ import { Link } from 'react-router-dom';
 const galleryImages = [
   {
     id: 1,
-    src: "https://images.unsplash.com/photo-1463797221720-6b07e6426c24?q=80&w=2071&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - salon"
+    src: "https://i.ibb.co/rGt9tgxx/1.jpg",
+    alt: "Wnętrze domu modułowego",
+    category: "Wnętrze",
   },
   {
     id: 2,
-    src: "https://images.unsplash.com/photo-1463797221720-6b07e6426c24?q=80&w=2071&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - salon"
+    src: "https://i.ibb.co/cc9K0q4N/2.jpg",
+    alt: "Wnętrze domu modułowego",
+    category: "Wnętrze",
   },
   {
     id: 3,
-    src: "https://images.unsplash.com/photo-1463797221720-6b07e6426c24?q=80&w=2071&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - salon"
+    src: "https://i.ibb.co/qXWNt6c/7.jpg",
+    alt: "Wnętrze domu modułowego",
+    category: "Wnętrze",
   },
   {
     id: 4,
-    src: "https://images.unsplash.com/photo-1604014237800-1c9102c219da?q=80&w=2070&auto=format&fit=crop",
-    alt: "Dom modułowy z drewnianą elewacją"
+    src: "https://i.ibb.co/ynmbfw9y/DJI-0150.jpg",
+    alt: "Zewnętrze domu modułowego",
+    category: "Zewnętrze",
   },
   {
     id: 5,
-    src: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2070&auto=format&fit=crop",
-    alt: "Wnętrze domu modułowego - sypialnia"
+    src: "https://i.ibb.co/F4xBYTZm/DJI-0152.jpg",
+    alt: "Zewnętrze domu modułowego",
+    category: "Zewnętrze",
   },
   {
     id: 6,
-    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
-    alt: "Dom modułowy z tarasem"
-  }
+    src: "https://i.ibb.co/k2p6BysQ/5.jpg",
+    alt: "Wnętrze domu modułowego",
+    category: "Wnętrze",
+  },
 ];
 
 const Gallery = () => {
