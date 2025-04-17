@@ -24,12 +24,10 @@ const Index = () => {
     <div className="overflow-hidden">
       <Navbar />
       <Hero />
-      <Timeline />
       <Technology />
       <Projects />
       <Gallery />
       <Address />
-      <Configurator />
       <Footer />
       
       {/* Floating CTA */}

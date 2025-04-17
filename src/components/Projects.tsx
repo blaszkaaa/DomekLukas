@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import { ChevronRight } from 'lucide-react';
 
 type Project = {
@@ -19,27 +25,21 @@ type Project = {
 const projectsData: Project[] = [
   {
     id: 1,
-    title: "Dom Modułowy - Mazury",
-    description: "Nowoczesny dom modułowy z 3 sypialniami, energooszczędny i ekologiczny.",
-    location: "Mazury, Polska",
-    year: "2023",
+    title: "Dom Modułowy – Rogowo",
+    description:
+      "Ekspresowa realizacja: od fabrycznych modułów po gotowy dom – prefabrykacja w 2–3 miesiące, montaż w jeden dzień i wykończenie w zaledwie 2–4 tygodni.",
+    location: "Rogowo, obok Gniezna, Polska",
+    year: "2024",
     image: "https://i.ibb.co/ynmbfw9y/DJI-0150.jpg"
   },
   {
     id: 2,
-    title: "Domek letniskowy - Karkonosze",
-    description: "Komfortowy domek modułowy idealny na wypoczynek dla rodziny 4-osobowej.",
-    location: "Karkonosze, Polska",
+    title: "Dom Modułowy – Rogowo",
+    description:
+      "Ekspresowa górska realizacja: prefabrykacja w 2 miesiące, montaż w jeden dzień i wykończenie w 2 tygodnie – w tym modułowy garaż – idealne schronienie na rodzinny wypoczynek.",
+    location: "Rogowo, obok Gniezna, Polska",
     year: "2023",
-    image: "https://i.ibb.co/F4xBYTZm/DJI-0152.jpg"
-  },
-  {
-    id: 3,
-    title: "Biuro modułowe - Warszawa",
-    description: "Przestrzeń biurowa stworzona z 4 modułów, pełna światła i ergonomiczna.",
-    location: "Warszawa, Polska",
-    year: "2022",
-    image: "https://i.ibb.co/d0ksh7Ls/11.jpg"
+    image: "https://i.postimg.cc/pdLxt6pn/temp-Imaged91-Ne5.avif"
   }
 ];
 
@@ -49,27 +49,21 @@ const Projects = () => {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    
     if (isAutoplay) {
       interval = setInterval(() => {
         setActiveProject((prev) => (prev + 1) % projectsData.length);
       }, 5000);
     }
-    
     return () => clearInterval(interval);
   }, [isAutoplay]);
 
   const handleProjectClick = (index: number) => {
     setActiveProject(index);
-    setIsAutoplay(false); // Zatrzymaj automatyczne przełączanie po kliknięciu
+    setIsAutoplay(false);
   };
 
-  // Wznów automatyczne przełączanie po pewnym czasie bezczynności
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsAutoplay(true);
-    }, 10000);
-    
+    const timeout = setTimeout(() => setIsAutoplay(true), 10000);
     return () => clearTimeout(timeout);
   }, [activeProject]);
 
@@ -83,15 +77,18 @@ const Projects = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Nasze <span className="text-orange-600">Realizacje</span></h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Nasze <span className="text-orange-600">Realizacje</span>
+          </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Sprawdź nasze najnowsze projekty domów modułowych, które zrealizowaliśmy dla naszych klientów w różnych lokalizacjach.
+            Sprawdź nasze najnowsze projekty modułowych domów.
           </p>
           <Separator className="w-24 h-1 bg-orange-500 mx-auto mt-8" />
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <motion.div 
+          {/* Lista kart */}
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -104,8 +101,12 @@ const Projects = () => {
                 whileHover={{ scale: activeProject !== index ? 1.02 : 1 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <Card 
-                  className={`cursor-pointer transition-all duration-300 ${activeProject === index ? 'border-orange-400 shadow-lg' : 'border-gray-200 hover:border-orange-200'}`}
+                <Card
+                  className={`cursor-pointer transition-all duration-300 ${
+                    activeProject === index
+                      ? 'border-orange-400 shadow-lg'
+                      : 'border-gray-200 hover:border-orange-200'
+                  }`}
                   onClick={() => handleProjectClick(index)}
                 >
                   <CardHeader className="p-4">
@@ -130,12 +131,12 @@ const Projects = () => {
                         </CardContent>
                         <CardFooter className="p-4 pt-0">
                           <Link to={`/projekt/${project.id}`}>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               className="flex items-center group"
                             >
-                              <span>Zobacz szczegóły</span> 
+                              <span>Zobacz szczegóły</span>
                               <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                             </Button>
                           </Link>
@@ -148,6 +149,7 @@ const Projects = () => {
             ))}
           </motion.div>
 
+          {/* Podgląd obrazka */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -156,24 +158,21 @@ const Projects = () => {
             className="rounded-xl overflow-hidden shadow-2xl relative h-[400px]"
           >
             <AnimatePresence mode="wait">
-              {projectsData.map((project, index) => (
+              {projectsData.map((project, index) =>
                 activeProject === index && (
                   <motion.div
                     key={project.id}
                     initial={{ opacity: 0, scale: 1.1 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ 
-                      duration: 0.5,
-                      ease: "easeInOut"
-                    }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
                     className="h-full w-full absolute top-0 left-0"
                   >
                     <Link to={`/projekt/${project.id}`} className="block h-full">
                       <div className="relative h-full w-full overflow-hidden">
-                        <img 
-                          src={project.image} 
-                          alt={project.title} 
+                        <img
+                          src={project.image}
+                          alt={project.title}
                           className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                         />
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-white">
@@ -184,24 +183,8 @@ const Projects = () => {
                     </Link>
                   </motion.div>
                 )
-              ))}
+              )}
             </AnimatePresence>
-            
-            {/* Wskaźniki slajdów */}
-            <div className="absolute bottom-4 right-4 flex space-x-2 z-10">
-              {projectsData.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleProjectClick(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    activeProject === index 
-                      ? 'bg-white w-4' 
-                      : 'bg-white/50 hover:bg-white/80'
-                  }`}
-                  aria-label={`Przejdź do projektu ${index + 1}`}
-                />
-              ))}
-            </div>
           </motion.div>
         </div>
 
@@ -213,7 +196,7 @@ const Projects = () => {
           className="mt-12 text-center"
         >
           <Link to="/galeria">
-            <Button 
+            <Button
               className="bg-orange-600 hover:bg-orange-700 transition-all duration-300 hover:scale-105"
               size="lg"
             >

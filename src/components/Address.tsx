@@ -1,3 +1,4 @@
+// src/components/Address.jsx
 import { motion } from 'framer-motion';
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
@@ -15,7 +16,9 @@ const Address = () => {
             className="space-y-8"
           >
             <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-bold">Odwiedź nasze <span className="text-orange-600">biuro</span></h2>
+              <h2 className="text-4xl md:text-5xl font-bold">
+                Odwiedź nasze <span className="text-orange-600">biuro</span>
+              </h2>
               <p className="text-lg text-gray-600">
                 Zapraszamy do odwiedzenia naszego biura projektowego, gdzie możesz zobaczyć makiety naszych domów modułowych
                 i porozmawiać z naszymi ekspertami.
@@ -30,31 +33,30 @@ const Address = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Adres</h3>
-                    <p className="text-gray-600">ul. Jana Pawła 2</p>
-                    <p className="text-gray-600">00-001 Słupca</p>
+                    <p className="text-gray-600">Słupca Kotunia</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start space-x-4">
                   <div className="bg-orange-100 p-3 rounded-full">
                     <Phone className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Telefon</h3>
-                    <p className="text-gray-600">+48 123 456 789</p>
+                    <p className="text-gray-600">691-749-704</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start space-x-4">
                   <div className="bg-orange-100 p-3 rounded-full">
                     <Mail className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Email</h3>
-                    <p className="text-gray-600">kontakt@domeklukas.pl</p>
+                    <p className="text-gray-600">lukaszwrotecki@gmail.com</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start space-x-4">
                   <div className="bg-orange-100 p-3 rounded-full">
                     <Clock className="h-6 w-6 text-orange-600" />

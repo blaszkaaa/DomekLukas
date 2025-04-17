@@ -1,3 +1,4 @@
+// src/components/Footer.jsx
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -14,7 +15,7 @@ const Footer = () => {
             viewport={{ once: true }}
           >
             <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-300 to-orange-500 bg-clip-text text-transparent mb-4">
-              DomekLukas
+              DomkiLukas
             </h3>
             <p className="text-gray-300 mb-6">
               Budujemy przyszłość, w której ekologia i nowoczesny styl życia tworzą idealną harmonię.
@@ -79,17 +80,16 @@ const Footer = () => {
               <li className="flex items-start">
                 <MapPin size={20} className="mr-2 text-orange-400 mt-1" />
                 <span className="text-gray-300">
-                  ul. Jana Pawła 2<br />
-                  00-000 Słupca
+                  Słupca Kotunia
                 </span>
               </li>
               <li className="flex items-center">
                 <Phone size={20} className="mr-2 text-orange-400" />
-                <span className="text-gray-300">+48 123 456 789</span>
+                <span className="text-gray-300">691-749-704</span>
               </li>
               <li className="flex items-center">
                 <Mail size={20} className="mr-2 text-orange-400" />
-                <span className="text-gray-300">kontakt@domeklukas.pl</span>
+                <span className="text-gray-300">lukaszwrotecki@gmail.com</span>
               </li>
             </ul>
           </motion.div>
@@ -126,7 +126,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 pt-8 mt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              &copy; {new Date().getFullYear()} DomekLukas. Wszystkie prawa zastrzeżone.
+              &copy; {new Date().getFullYear()} DomkiLukas. Wszystkie prawa zastrzeżone.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-gray-300 text-sm">Polityka prywatności</a>

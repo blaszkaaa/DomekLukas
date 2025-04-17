@@ -7,18 +7,18 @@ import { Link } from 'react-router-dom';
 const SLIDES = [
   { 
     id: 1, 
-    title: 'Widok dzień/noc', 
+    title: 'Zewnątrz', 
     image: 'https://i.postimg.cc/pdLxt6pn/temp-Imaged91-Ne5.avif'
   },
   { 
     id: 2, 
     title: 'Wnętrze', 
-    image: 'https://i.postimg.cc/pdq7YVVm/temp-Image-Vgh-Ygm.avif'
+    image: 'https://i.postimg.cc/qBjb5N4f/temp-Image0kjp5-G.avif'
   },
   { 
     id: 3, 
     title: 'Z lotu ptaka', 
-    image: 'https://i.postimg.cc/KjXd4qvf/temp-Image-Hsa-PAG.avif'
+    image: 'https://i.ibb.co/ynmbfw9y/DJI-0150.jpg'
   }
 ];
 
@@ -85,12 +85,11 @@ const Hero = () => {
               </div>
             </h2>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-eco-anthracite mb-4">
-              Twój wymarzony dom gotowy w{' '}
+              Twój wymarzony dom gotowy w krótkim czasie
               <span className="text-orange-600 relative inline-block">
                 <span className="animate-pulse">
-                  <span className="countdown-number" data-count="30"></span>
-                </span>{' '}
-                dni!
+                </span>
+                
               </span>
             </h1>
             <p className="text-lg text-gray-600 max-w-md">

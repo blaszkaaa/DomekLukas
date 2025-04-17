@@ -40,7 +40,7 @@ const Navbar = () => {
                 whileTap={{ scale: 0.95 }}
                 className="text-2xl font-bold bg-gradient-to-r from-orange-700 to-orange-500 bg-clip-text text-transparent"
               >
-                DomekLukas
+                DomkiLukas
               </motion.div>
             </Link>
           </div>
@@ -49,8 +49,7 @@ const Navbar = () => {
           <div className="hidden md:flex space-x-8">
             {[
               { label: 'Home', href: '#home' },
-              { label: 'Etapy', href: '#etapy' },
-              { label: 'Technologia', href: '#technologia' },
+              { label: 'Nasze zalety', href: '#technologia' },
               { label: 'Realizacje', href: '#realizacje' },
               { label: 'Galeria', href: '#galeria' },
               { label: 'Kontakt', href: '#kontakt' },
